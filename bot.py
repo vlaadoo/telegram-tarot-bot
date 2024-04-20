@@ -1,8 +1,12 @@
 import config
 from core.handlers.basic import cmd_start, get_day_card, get_layout, admin_panel, \
-    layout_title, layout_image, layout_1, layout_2, layout_3, Layout
-from core.handlers.callback import select_card_of_day, stop_card_of_day_handler, change_layout, \
-    layout_1_call, layout_2_call, layout_3_call
+    layout_title, layout_image, layout_1, layout_2, layout_3, Layout, get_horoscope, \
+    edit_card_desc, temp_layout_context, temp_layout_image, temp_layout_title
+from core.handlers.callback import select_card_of_day, change_layout, \
+    layout_1_call, layout_2_call, layout_3_call, \
+    edit_cards, edit_big_arcans, edit_pentacli, edit_zhezly, edit_mechi, edit_chashi, \
+    get_horoscope_call, edit_card_id, UpdateBigCard, \
+    show_cards, show_big_arcans, show_pentacli, show_zhezly, show_mechi, show_chashi, show_card_details 
 from core.utils.commands import set_command
 
 import asyncio
@@ -33,20 +37,52 @@ async def main():
     dp.message.register(get_day_card, Command(commands=['card']))
     dp.message.register(get_layout, Command(commands=['layout']))
     dp.message.register(admin_panel, Command(commands=['admin']))
+    dp.message.register(get_horoscope, Command(commands=['horoscope']))
+    dp.callback_query.register(admin_panel, F.data.startswith('adminka'))
     
     dp.callback_query.register(select_card_of_day, F.data.startswith('select_card_of_day'))
-    dp.callback_query.register(stop_card_of_day_handler, F.data.startswith('stop_card_of_day'))
     dp.callback_query.register(change_layout, F.data.startswith('set_layout_title'))
     dp.callback_query.register(layout_1_call, F.data.startswith('layout_1_call'))
     dp.callback_query.register(layout_2_call, F.data.startswith('layout_2_call'))
     dp.callback_query.register(layout_3_call, F.data.startswith('layout_3_call'))
+    dp.callback_query.register(get_horoscope_call, F.data.startswith('aries') | F.data.startswith('taurus') 
+        | F.data.startswith('gemini') | F.data.startswith('cancer') | F.data.startswith('leo') | F.data.startswith('virgo') 
+        | F.data.startswith('libra') | F.data.startswith('scorpio') | F.data.startswith('sagittarius') 
+        | F.data.startswith('capricorn') | F.data.startswith('aquarius') | F.data.startswith('pisces'))
     
-    dp.message.register(layout_title, Layout.title)
-    dp.message.register(layout_image, Layout.image)
-    dp.message.register(layout_1, Layout.layout_1_context)
-    dp.message.register(layout_2, Layout.layout_2_context)
-    dp.message.register(layout_3, Layout.layout_3_context)
+    # dp.message.register(layout_title, Layout.title)
+    # dp.message.register(layout_image, Layout.image)
+    # dp.message.register(layout_1, Layout.layout_1_context)
+    # dp.message.register(layout_2, Layout.layout_2_context)
+    # dp.message.register(layout_3, Layout.layout_3_context)
+    
+    dp.callback_query.register(change_layout, F.data.startswith('my_change_layout'))
+    dp.message.register(temp_layout_title, Layout.title)
+    dp.message.register(temp_layout_image, Layout.image)
+    dp.message.register(temp_layout_context, Layout.layout_context)
         
+    # Изменение описания карт
+    dp.callback_query.register(edit_cards, F.data.startswith('change_cards'))
+    dp.callback_query.register(edit_big_arcans, F.data.startswith('big_arcans'))
+    dp.callback_query.register(edit_pentacli, F.data.startswith('pentacli'))
+    dp.callback_query.register(edit_zhezly, F.data.startswith('zhezly'))
+    dp.callback_query.register(edit_mechi, F.data.startswith('mechi'))
+    dp.callback_query.register(edit_chashi, F.data.startswith('chashi'))
+    
+    dp.callback_query.register(edit_card_id, F.data.regexp("^([0-6]?[0-9]|7[0-7])$"))
+    dp.message.register(edit_card_desc, UpdateBigCard.description)
+    
+    dp.callback_query.register(show_cards, F.data.startswith('check_cards'))
+    dp.callback_query.register(show_big_arcans, F.data.startswith('check_big_arcans'))
+    dp.callback_query.register(show_pentacli, F.data.startswith('check_pentacli'))
+    dp.callback_query.register(show_zhezly, F.data.startswith('check_zhezly'))
+    dp.callback_query.register(show_mechi, F.data.startswith('check_mechi'))
+    dp.callback_query.register(show_chashi, F.data.startswith('check_chashi'))
+    dp.callback_query.register(show_card_details, F.data.regexp("^([0-6]?[0-9]|7[0-7])_check$"))
+    
+    
+    
+    
     await dp.start_polling(bot)
     
     user_bot = Client(name='user_bot', api_id=config.API_ID, api_hash=config.API_HASH)
