@@ -1,3 +1,4 @@
+import json
 from aiogram import Bot, Dispatcher
 from aiogram.types import CallbackQuery, FSInputFile
 from aiogram import exceptions
@@ -9,11 +10,14 @@ from core.keyboards.inline import get_zodiac_keyboard, show_cards_arcans_kb, \
     show_big_arcans_kb, show_pentacli_kb, show_zhezly_kb, show_mechi_kb, show_chashi_kb
 from infobase import card_desc, cards
 import config
-from core.database.database import get_card_name, get_random_row, get_card_desc
+from core.database.database import get_card_name, get_random_row, get_card_desc, get_layout_from_db
 
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-from core.handlers.basic import layout_change, temp_layout_change
+from core.handlers.basic import layout_change
+
+import re
+
 
 is_running = {}
 
@@ -29,33 +33,32 @@ async def select_card_of_day(call: CallbackQuery, bot: Bot):
     await bot.delete_message(chat_id, call.message.message_id)  # удаление старого сообщения
     await bot.send_photo(chat_id, FSInputFile(photo_path), caption=message_caption)    
     await call.answer()
+    
+async def select_card_of_day_2(call: CallbackQuery, bot: Bot):
+    chat_id = call.message.chat.id
+    daycard = get_random_row()
+    message_caption = f"Карта дня: {daycard[2]}\nОписание карты:\n{daycard[3]}"
+    photo_path = './cards/' + daycard[1]
+    print(message_caption)
+    # await bot.delete_message(chat_id, call.message.message_id)  # удаление старого сообщения
+    # await bot.send_photo(chat_id, FSInputFile(photo_path), caption=message_caption)    
+    await call.answer(message_caption[:200], show_alert=True)
 
 async def change_layout(call: CallbackQuery, state: FSMContext, bot: Bot):
     await bot.send_message(call.from_user.id, 'Введите название расклада!')
-    await temp_layout_change(call, state)
-
-
-async def layout_1_call(call: CallbackQuery, state: FSMContext, bot: Bot):
-    with open('./1.txt', 'r', encoding='utf-8') as f:
-        await bot.send_message(call.from_user.id, f.read())
-    await call.answer()
-
-async def layout_2_call(call: CallbackQuery, state: FSMContext, bot: Bot):
-    with open('./2.txt', 'r', encoding='utf-8') as f:
-        await bot.send_message(call.from_user.id, f.read())
-    await call.answer()
-
-async def layout_3_call(call: CallbackQuery, state: FSMContext, bot: Bot):
-    with open('./1.txt', 'r', encoding='utf-8') as f:
-        await bot.send_message(call.from_user.id, f.read())
-    await call.answer()
+    await layout_change(call, state)
     
-    
+async def layout_call(call: CallbackQuery, state: FSMContext, bot: Bot):
+    number = re.findall(r'\d+', call.data)
+    print(number)
+    values = json.loads(get_layout_from_db()[2])
+    await call.answer(values[int(number[0]) - 1], show_alert=True)
+
 async def get_horoscope_call(call: CallbackQuery):
-    await call.answer(show_alert=False)
     zodiac = call.data
-    text = await get_text_horoscope(zodiac=zodiac)
-    await call.message.edit_text(text=text, reply_markup=get_zodiac_keyboard())
+    sentences = re.split('(?<=[.])\\s', await get_text_horoscope(zodiac=zodiac))
+    message_text = random.choice(sentences)
+    await call.answer(text=message_text, show_alert=True)
     
 
 # --------Изменение описания карт--------

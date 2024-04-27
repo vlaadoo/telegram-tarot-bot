@@ -1,11 +1,17 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from core.database.database import get_layout_from_db
+import json
 
 start_card_of_day = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(
             text="Выбрать карту",
             callback_data="select_card_of_day"
+        ),
+                InlineKeyboardButton(
+            text="Выбрать карту 2",
+            callback_data="2_select_card_of_day"
         )
     ]
 ])
@@ -21,14 +27,16 @@ def admin_panel_inline():
     return admin_panel_inline_keyboard.as_markup()
 
 
-layout_inline = InlineKeyboardMarkup(inline_keyboard=[
-    [
-        InlineKeyboardButton(text="1", callback_data="layout_1_call"),
-        InlineKeyboardButton(text="2", callback_data="layout_2_call"),
-        InlineKeyboardButton(text="3", callback_data="layout_3_call"),
-    ]
-])
 
+def layout_inline():
+    layout_inline_keyboard = InlineKeyboardBuilder()
+    values = json.loads(get_layout_from_db()[2])
+    count = 0
+    for value in values:
+        count += 1
+        layout_inline_keyboard.button(text=str(count), callback_data=f"layout_{count}_call")
+        
+    return layout_inline_keyboard.as_markup()
 
 def get_zodiac_keyboard():
     keyboard_builder = InlineKeyboardBuilder()

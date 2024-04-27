@@ -1,12 +1,13 @@
 import config
 from core.handlers.basic import cmd_start, get_day_card, get_layout, admin_panel, \
-    layout_title, layout_image, layout_1, layout_2, layout_3, Layout, get_horoscope, \
-    edit_card_desc, temp_layout_context, temp_layout_image, temp_layout_title
+    Layout, get_horoscope, \
+    edit_card_desc, layout_context, layout_image, layout_title
 from core.handlers.callback import select_card_of_day, change_layout, \
-    layout_1_call, layout_2_call, layout_3_call, \
+    layout_call, \
     edit_cards, edit_big_arcans, edit_pentacli, edit_zhezly, edit_mechi, edit_chashi, \
     get_horoscope_call, edit_card_id, UpdateBigCard, \
-    show_cards, show_big_arcans, show_pentacli, show_zhezly, show_mechi, show_chashi, show_card_details 
+    show_cards, show_big_arcans, show_pentacli, show_zhezly, show_mechi, show_chashi, show_card_details, \
+    select_card_of_day_2
 from core.utils.commands import set_command
 
 import asyncio
@@ -41,25 +42,19 @@ async def main():
     dp.callback_query.register(admin_panel, F.data.startswith('adminka'))
     
     dp.callback_query.register(select_card_of_day, F.data.startswith('select_card_of_day'))
-    dp.callback_query.register(change_layout, F.data.startswith('set_layout_title'))
-    dp.callback_query.register(layout_1_call, F.data.startswith('layout_1_call'))
-    dp.callback_query.register(layout_2_call, F.data.startswith('layout_2_call'))
-    dp.callback_query.register(layout_3_call, F.data.startswith('layout_3_call'))
+    dp.callback_query.register(select_card_of_day_2, F.data.startswith('2_select_card_of_day'))
+
+    dp.callback_query.register(layout_call, F.data.regexp("^layout_\d_call$"))
     dp.callback_query.register(get_horoscope_call, F.data.startswith('aries') | F.data.startswith('taurus') 
         | F.data.startswith('gemini') | F.data.startswith('cancer') | F.data.startswith('leo') | F.data.startswith('virgo') 
         | F.data.startswith('libra') | F.data.startswith('scorpio') | F.data.startswith('sagittarius') 
         | F.data.startswith('capricorn') | F.data.startswith('aquarius') | F.data.startswith('pisces'))
     
-    # dp.message.register(layout_title, Layout.title)
-    # dp.message.register(layout_image, Layout.image)
-    # dp.message.register(layout_1, Layout.layout_1_context)
-    # dp.message.register(layout_2, Layout.layout_2_context)
-    # dp.message.register(layout_3, Layout.layout_3_context)
     
     dp.callback_query.register(change_layout, F.data.startswith('my_change_layout'))
-    dp.message.register(temp_layout_title, Layout.title)
-    dp.message.register(temp_layout_image, Layout.image)
-    dp.message.register(temp_layout_context, Layout.layout_context)
+    dp.message.register(layout_title, Layout.title)
+    dp.message.register(layout_image, Layout.image)
+    dp.message.register(layout_context, Layout.layout_context)
         
     # Изменение описания карт
     dp.callback_query.register(edit_cards, F.data.startswith('change_cards'))
