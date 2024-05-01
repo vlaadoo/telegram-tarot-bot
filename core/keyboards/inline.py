@@ -7,10 +7,6 @@ start_card_of_day = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(
             text="Выбрать карту",
-            callback_data="select_card_of_day"
-        ),
-                InlineKeyboardButton(
-            text="Выбрать карту 2",
             callback_data="2_select_card_of_day"
         )
     ]
@@ -18,11 +14,10 @@ start_card_of_day = InlineKeyboardMarkup(inline_keyboard=[
 
 def admin_panel_inline():
     admin_panel_inline_keyboard = InlineKeyboardBuilder()
-    admin_panel_inline_keyboard.button(text="Изменить данные расклада", callback_data="set_layout_title")
     admin_panel_inline_keyboard.button(text="Изменить значения карт", callback_data="change_cards")
     admin_panel_inline_keyboard.button(text="Посмотреть значения карт", callback_data="check_cards")
     admin_panel_inline_keyboard.button(text="Изменить расклад", callback_data="my_change_layout")
-    
+
     admin_panel_inline_keyboard.adjust(1)
     return admin_panel_inline_keyboard.as_markup()
 
@@ -35,7 +30,7 @@ def layout_inline():
     for value in values:
         count += 1
         layout_inline_keyboard.button(text=str(count), callback_data=f"layout_{count}_call")
-        
+
     return layout_inline_keyboard.as_markup()
 
 def get_zodiac_keyboard():
@@ -65,7 +60,7 @@ def edit_cards_arcans_kb():
     edit_cards_arcans_keyboard.button(text="Мечи", callback_data="mechi")
     edit_cards_arcans_keyboard.button(text="Чаши", callback_data="chashi")
     edit_cards_arcans_keyboard.button(text="← Назад", callback_data="adminka")
-    
+
     edit_cards_arcans_keyboard.adjust(1)
     return edit_cards_arcans_keyboard.as_markup()
 
@@ -95,9 +90,9 @@ def edit_big_arcans_kb():
     edit_big_arcans_keyboard.button(text="Эон", callback_data="20")
     edit_big_arcans_keyboard.button(text="Вселенная", callback_data="21")
     edit_big_arcans_keyboard.button(text="← Назад", callback_data="change_cards")
-    
+
     edit_big_arcans_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return edit_big_arcans_keyboard.as_markup()
 
 def edit_pentacli_kb():
@@ -117,9 +112,9 @@ def edit_pentacli_kb():
     edit_pentacli_keyboard.button(text="Королева дисков", callback_data="34")
     edit_pentacli_keyboard.button(text="Рыцарь дисков", callback_data="35")
     edit_pentacli_keyboard.button(text="← Назад", callback_data="change_cards")
-    
+
     edit_pentacli_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return edit_pentacli_keyboard.as_markup()
 
 def edit_zhezly_kb():
@@ -139,9 +134,9 @@ def edit_zhezly_kb():
     edit_zhezly_keyboard.button(text="Королева жезлов", callback_data="48")
     edit_zhezly_keyboard.button(text="Рыцарь жезлов", callback_data="49")
     edit_zhezly_keyboard.button(text="← Назад", callback_data="change_cards")
-    
+
     edit_zhezly_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return edit_zhezly_keyboard.as_markup()
 
 def edit_mechi_kb():
@@ -161,9 +156,9 @@ def edit_mechi_kb():
     edit_mechi_keyboard.button(text="Королева мечей", callback_data="62")
     edit_mechi_keyboard.button(text="Рыцарь мечей", callback_data="63")
     edit_mechi_keyboard.button(text="← Назад", callback_data="change_cards")
-    
+
     edit_mechi_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return edit_mechi_keyboard.as_markup()
 
 def edit_chashi_kb():
@@ -183,9 +178,9 @@ def edit_chashi_kb():
     edit_chashi_keyboard.button(text="Королева чаш", callback_data="76")
     edit_chashi_keyboard.button(text="Рыцарь чаш", callback_data="77")
     edit_chashi_keyboard.button(text="← Назад", callback_data="change_cards")
-    
+
     edit_chashi_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return edit_chashi_keyboard.as_markup()
 
 
@@ -200,7 +195,7 @@ def show_cards_arcans_kb():
     show_cards_arcans_keyboard.button(text="Мечи", callback_data="check_mechi")
     show_cards_arcans_keyboard.button(text="Чаши", callback_data="check_chashi")
     show_cards_arcans_keyboard.button(text="← Назад", callback_data="adminka")
-    
+
     show_cards_arcans_keyboard.adjust(1)
     return show_cards_arcans_keyboard.as_markup()
 
@@ -229,9 +224,9 @@ def show_big_arcans_kb():
     show_big_arcans_keyboard.button(text="Эон", callback_data="20_check")
     show_big_arcans_keyboard.button(text="Вселенная", callback_data="21_check")
     show_big_arcans_keyboard.button(text="← Назад", callback_data="check_cards")
-    
+
     show_big_arcans_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return show_big_arcans_keyboard.as_markup()
 
 def show_pentacli_kb():
@@ -251,9 +246,9 @@ def show_pentacli_kb():
     show_pentacli_keyboard.button(text="Королева дисков", callback_data="34_check")
     show_pentacli_keyboard.button(text="Рыцарь дисков", callback_data="35_check")
     show_pentacli_keyboard.button(text="← Назад", callback_data="check_cards")
-    
+
     show_pentacli_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return show_pentacli_keyboard.as_markup()
 
 def show_zhezly_kb():
@@ -273,9 +268,9 @@ def show_zhezly_kb():
     show_zhezly_keyboard.button(text="Королева жезлов", callback_data="48_check")
     show_zhezly_keyboard.button(text="Рыцарь жезлов", callback_data="49_check")
     show_zhezly_keyboard.button(text="← Назад", callback_data="check_cards")
-    
+
     show_zhezly_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return show_zhezly_keyboard.as_markup()
 
 def show_mechi_kb():
@@ -295,9 +290,9 @@ def show_mechi_kb():
     show_mechi_keyboard.button(text="Королева мечей", callback_data="62_check")
     show_mechi_keyboard.button(text="Рыцарь мечей", callback_data="63_check")
     show_mechi_keyboard.button(text="← Назад", callback_data="check_cards")
-    
+
     show_mechi_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return show_mechi_keyboard.as_markup()
 
 def show_chashi_kb():
@@ -317,7 +312,7 @@ def show_chashi_kb():
     show_chashi_keyboard.button(text="Королева чаш", callback_data="76_check")
     show_chashi_keyboard.button(text="Рыцарь чаш", callback_data="77_check")
     show_chashi_keyboard.button(text="← Назад", callback_data="check_cards")
-    
+
     show_chashi_keyboard.adjust(2, 2, 2, 2, 2, 2, 2, 1)
-    
+
     return show_chashi_keyboard.as_markup()
